@@ -118,4 +118,31 @@ public class EmployeeServiceImpl implements EmployeeService {
         return new PageResult(total,records);
     }
 
+    /**
+     * 启用禁用员工账号
+     * @param stautus
+     * @param id
+     */
+    @Override
+    public void startOrStop(Integer stautus, Long id) {
+        //update employee set status = ？ where id = ?
+
+//        Employee employee = new Employee();
+//        employee.setStatus(stautus);
+//        employee.setId(id);
+
+        //两种方式都能构建
+        Employee employee = Employee.builder()
+                .status(stautus)
+                .id(id)
+                .build();
+
+
+        //要使用动态sql，所以传递employee实体
+        employeeMapper.update(employee);
+
+
+    }
+
+
 }

@@ -34,4 +34,12 @@ public interface EmployeeMapper {
      */
     //这里要用到动态sql，不推荐使用注解的方式
     Page<Employee> pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
+
+
+    /**
+     * 根据主键动态修改属性
+     * @param employee
+     */
+    //只要修改类的sql就都可以调用这个sql
+    void update(Employee employee);
 }
