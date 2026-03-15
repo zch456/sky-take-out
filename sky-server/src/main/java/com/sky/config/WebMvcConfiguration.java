@@ -71,6 +71,11 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         log.info("开始设置静态资源映射");
         registry.addResourceHandler("/doc.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+
+        //把文件上传路径映射到本地路径
+        registry.addResourceHandler("/upload/**")
+                .addResourceLocations("file:D:/java code/sky-take-out/local_update/");
+
     }
 
     /**
@@ -87,8 +92,8 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         converter.setObjectMapper(new JacksonObjectMapper());
         //将自己的消息消息转换器加入到容器中
         converters.add(0,converter);
-
-
-
     }
+
+
+
 }

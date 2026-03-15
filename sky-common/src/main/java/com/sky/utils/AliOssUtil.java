@@ -1,3 +1,4 @@
+/*
 package com.sky.utils;
 
 import com.aliyun.oss.ClientException;
@@ -19,13 +20,15 @@ public class AliOssUtil {
     private String accessKeySecret;
     private String bucketName;
 
-    /**
+    */
+/**
      * 文件上传
      *
      * @param bytes
      * @param objectName
      * @return
-     */
+     *//*
+
     public String upload(byte[] bytes, String objectName) {
 
         // 创建OSSClient实例。
@@ -66,3 +69,54 @@ public class AliOssUtil {
         return stringBuilder.toString();
     }
 }
+*/
+
+
+
+
+//改成本地存储文件，不用阿里云
+
+package com.sky.utils;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
+import java.io.File;
+import java.io.FileOutputStream;
+
+@Component
+@Slf4j
+public class AliOssUtil {
+
+    // 本地存储目录
+    private static final String BASE_PATH = "D:/java code/sky-take-out/local_update/";
+
+    /**
+     * 文件上传（本地版）
+     */
+    public String upload(byte[] bytes, String objectName) {
+
+        try {
+            File dir = new File(BASE_PATH);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            File file = new File(BASE_PATH + objectName);
+
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(bytes);
+            fos.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String url = "http://localhost:8080/upload/" + objectName;
+
+        log.info("文件上传到本地: {}", url);
+
+        return url;
+    }
+}
+
