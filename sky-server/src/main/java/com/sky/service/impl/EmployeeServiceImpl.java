@@ -139,7 +139,6 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .id(id)
                 .build();
 
-
         //要使用动态sql，所以传递employee实体
         employeeMapper.update(employee);
     }
