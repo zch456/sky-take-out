@@ -68,4 +68,17 @@ public interface DishMapper {
     @AutoFill(OperationType.UPDATE)
     void update(Dish dish);
 
+    /**
+     * 根据分类id动态查询菜品
+     * @param dish
+     * @return
+     */
+    List<Dish> list(Dish dish);
+
+    /**
+     * 查询套餐中停售菜品数量
+     * @param id
+     * @return
+     */
+    int countDisableDish(Long id);
 }

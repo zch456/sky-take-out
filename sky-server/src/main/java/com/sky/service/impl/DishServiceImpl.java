@@ -1,6 +1,7 @@
 package com.sky.service.impl;
 
 
+import com.github.pagehelper.Constant;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
@@ -13,6 +14,7 @@ import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealDishMapper;
+import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
@@ -36,6 +38,10 @@ public class DishServiceImpl implements DishService {
 
     @Autowired
     private SetmealDishMapper setmealDishMapper;
+
+    @Autowired
+    private SetmealMapper setmealMapper;
+
 
     /**
      * 新增菜品和对应的口味数据
@@ -172,5 +178,49 @@ public class DishServiceImpl implements DishService {
             dishFlavorMapper.insertBatch(flavors);
         }
 
+    }
+
+    /**
+     * 根据分类id查询菜品
+     * @param categoryId
+     * @return
+     */
+    @Override
+    public List<Dish> list(Long categoryId) {
+
+        //根据分类id查询菜品
+        Dish dish = Dish.builder()
+                .categoryId(categoryId)
+                .status(StatusConstant.ENABLE)
+                .build();
+        return dishMapper.list(dish);
+    }
+
+    /**
+     * 菜品起售停售
+     */
+    @Transactional
+    @Override
+    public void startOrStop(Integer status, Long id) {
+
+        // 如果是“停售”
+        if (status == StatusConstant.DISABLE) {
+
+            int count = setmealMapper.countByDishId(id);
+
+            if (count > 0) {
+                throw new DeletionNotAllowedException(
+                        MessageConstant.DISH_BE_RELATED_BY_SETMEAL
+                );
+            }
+        }
+
+        // 更新菜品状态
+        Dish dish = Dish.builder()
+                .id(id)
+                .status(status)
+                .build();
+
+        dishMapper.update(dish);
     }
 }
