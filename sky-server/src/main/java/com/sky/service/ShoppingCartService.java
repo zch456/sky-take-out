@@ -26,5 +26,9 @@ public interface ShoppingCartService {
      */
     void cleanShoppingCart();
 
-
+    /**
+     * 删除购物车中的某一个数据
+     * @return
+     */
+    void subShoppingCart(ShoppingCartDTO shoppingCartDTO);
 }
